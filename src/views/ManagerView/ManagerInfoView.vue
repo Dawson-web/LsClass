@@ -11,7 +11,7 @@ onMounted(async () => {
 </script>
 <template>
   <el-card
-    style="width: 480px; margin: 0 auto; margin-top: 20vh"
+    style="width: 480px; margin: 0 auto; margin-top: 20vh; border-radius: 15px"
     shadow="always"
   >
     <el-form :model="form" label-width="auto" style="max-width: 600px">

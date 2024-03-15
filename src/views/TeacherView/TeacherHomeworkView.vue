@@ -2,7 +2,6 @@
 import { useManagerStore } from "@/stores/manager";
 import { usePublicStore } from "@/stores/public";
 import { useTeacherStore } from "@/stores/teacher";
-import { Edit } from "@element-plus/icons-vue";
 import { onMounted, ref } from "vue";
 const editVisible = ref(false);
 const homeWorkForm = ref({});
@@ -44,95 +43,187 @@ const doCreateHomework = async () => {
   editVisible.value = false;
   getTeacherHomework();
 };
+
+const timeConvert = (time: number) => {
+  let date = new Date(time);
+  let year = date.getFullYear();
+  let month = ("0" + (date.getMonth() + 1)).slice(-2); // JavaScript months range from 0 to 11, hence the "+1" and then "0" + to add leading zero
+  let day = ("0" + date.getDate()).slice(-2);
+  let hours = ("0" + date.getHours()).slice(-2);
+  let minutes = ("0" + date.getMinutes()).slice(-2);
+  let seconds = ("0" + date.getSeconds()).slice(-2);
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 </script>
 
 <template>
-  <div>
-    <h1>学生作业：</h1>
+  <div class="app-container">
+    <div class="header">
+      <h1>学生作业：</h1>
+      <el-button
+        @click="editVisible = true"
+        type="primary"
+        class="update-button"
+        >发布作业</el-button
+      >
+    </div>
     <el-row :gutter="12">
       <el-col :span="8" :key="item.homeworkId" v-for="item in homeworkList">
-        <el-card shadow="hover" class="homework-card"
-          ><h4>{{ item.title }}</h4>
-          <div>
-            <div class="bottom">
-              <span class="type">作业序列号：{{ item.homeworkId }}</span>
-              <span class="type">作业描述：{{ item.description }}</span>
-              <span class="type">发布时间：{{ item.dueDate }}</span>
-              <span class="type">截止时间：{{ item.assignmentDate }}</span>
-            </div>
+        <el-card shadow="hover" class="homework-card info-card">
+          <h4>{{ item.title }}</h4>
+          <div class="homework-info">
+            <el-text class="type">作业序列号：{{ item.homeworkId }}</el-text>
+            <el-text class="type">作业描述：{{ item.description }}</el-text>
+            <el-text class="type"
+              >发布时间：{{ timeConvert(item.dueDate) }}</el-text
+            >
+            <el-text class="type"
+              >截止时间：{{ timeConvert(item.assignmentDate) }}</el-text
+            >
+            <el-link
+              type="primary"
+              :href="item.fileUrl"
+              target="_blank"
+              class="link"
+              >下载附件</el-link
+            >
           </div>
         </el-card>
       </el-col>
     </el-row>
-  </div>
-  <el-button
-    @click="editVisible = true"
-    style="position: fixed; margin-left: 95vw"
-    type="primary"
-    :icon="Edit"
-    circle
-  />
-  <el-dialog v-model="editVisible" title="发布作业" width="600">
-    <el-form label-width="auto" :model="homeWorkForm" style="max-width: 600px">
-      <el-form-item label="标题">
-        <el-input v-model="homeWorkForm.title" />
-      </el-form-item>
-      <el-form-item label="班级">
-        <el-select
-          v-model="homeWorkForm.courseId"
-          placeholder="Select"
-          size="large"
-          style="width: 240px"
-        >
-          <el-option
-            v-for="item in courseList"
-            :key="item.courseId"
-            :label="item.courseName"
-            :value="item.courseId"
+    <el-dialog
+      v-model="editVisible"
+      title="发布作业"
+      width="600"
+      class="info-card"
+    >
+      <el-form label-width="auto" :model="homeWorkForm" class="info-form">
+        <el-form-item label="标题">
+          <el-input v-model="homeWorkForm.title" class="input-field" />
+        </el-form-item>
+        <el-form-item label="班级">
+          <el-select
+            v-model="homeWorkForm.courseId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+            class="custom-select"
+          >
+            <el-option
+              v-for="item in courseList"
+              :key="item.courseId"
+              :label="item.className"
+              :value="item.courseId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="完成用时">
+          <el-input-number
+            v-model="homeWorkForm.dueDate"
+            :min="1"
+            :max="120"
+            class="custom-select"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="完成用时">
-        <el-input-number v-model="homeWorkForm.dueDate" :min="1" :max="120" />
-      </el-form-item>
-      <el-form-item label="作业描述">
-        <el-input v-model="homeWorkForm.description" />
-      </el-form-item>
-      <el-form-item label="附件">
-        <el-input v-model="homeWorkForm.fileUrl" type="file" id="myFile" />
-      </el-form-item>
-    </el-form>
-    <el-button @="cancleCreateHomework">Default</el-button>
-    <el-button type="primary" @click="doCreateHomework">Primary</el-button>
-  </el-dialog>
+        </el-form-item>
+        <el-form-item label="作业描述">
+          <el-input v-model="homeWorkForm.description" class="input-field" />
+        </el-form-item>
+        <el-form-item label="附件">
+          <el-input
+            v-model="homeWorkForm.fileUrl"
+            type="file"
+            id="myFile"
+            class="input-field"
+          />
+        </el-form-item>
+      </el-form>
+      <div class="button-container">
+        <el-button @click="cancleCreateHomework" class="update-button"
+          >取消</el-button
+        >
+        <el-button
+          type="primary"
+          @click="doCreateHomework"
+          class="confirm-button"
+          >发布</el-button
+        >
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-.homework-card {
+<style scoped lang="scss">
+.app-container {
+  background-color: #eee;
+  padding: 30px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.update-button {
+  color: #333333;
+  background-color: #fafafa;
+  border-color: #333333;
+  &:hover {
+    color: #fafafa;
+    background-color: #333333;
+  }
+}
+
+.info-card {
+  background-color: #fafafa;
+  color: #333333;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  width: 90%;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.homework-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   .type {
-    font-size: 12px;
-    color: #999;
+    color: #333333;
+    font-size: 16px;
   }
+}
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px;
-  }
+.input-field,
+.custom-select {
+  color: #333333;
+  font-size: 16px;
+  background-color: #fafafa;
+  border-radius: 4px;
+  width: 200px;
+  margin-bottom: 10px;
+}
 
-  .desc {
-    height: 80px;
-    width: 100%;
-    overflow: hidden;
-  }
-  .link {
-    float: right;
-    margin-top: 8px;
-    padding: 0;
-    min-height: auto;
+.button-container {
+  text-align: center;
+}
+
+.confirm-button {
+  color: #333333;
+  background-color: #fafafa;
+  border-color: #333333;
+  margin: 10px;
+  &:hover {
+    color: #fafafa;
+    background-color: #333333;
   }
 }
 </style>

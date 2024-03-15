@@ -21,21 +21,33 @@ async function onSubmit() {
     <main>
       <h1 class="title">登录</h1>
       <div class="login-form-wrapper">
-        <el-radio-group v-model="userType" size="large">
-          <el-radio-button label="教师" value="teacher" />
+        <el-radio-group
+          v-model="userType"
+          style="display: flex; justify-content: center"
+        >
           <el-radio-button label="学生" value="student" />
+          <el-radio-button label="教师" value="teacher" />
           <el-radio-button label="管理员" value="manager" />
         </el-radio-group>
         <ElForm label-position="top">
-          <ElFormItem label="邮箱">
+          <ElFormItem label="邮箱:">
             <ElInput type="usernmae" v-model="loginForm.username" />
           </ElFormItem>
-          <ElFormItem label="密码" style="margin-bottom: calc(18px - 1.2rem)">
+          <ElFormItem label="密码:" style="margin-bottom: calc(18px - 1.2rem)">
             <ElInput
               type="password"
               show-password
               v-model="loginForm.password"
             />
+            <div style="display: flex; align-items: center">
+              <ElText style="font-size: 10px">忘记密码?</ElText>
+              <ElLink
+                type="primary"
+                @click="$router.push('/backpassword')"
+                style="font-size: 10px"
+                >立即找回</ElLink
+              >
+            </div>
           </ElFormItem>
           <br />
           <ElButton style="width: 100%" type="primary" plain @click="onSubmit"
@@ -46,12 +58,6 @@ async function onSubmit() {
           <ElText>没有账户？</ElText>
           <ElLink type="primary" @click="$router.push('/register')"
             >立即注册</ElLink
-          >
-        </div>
-        <div style="display: flex; align-items: center; margin-top: 1rem">
-          <ElText>忘记密码?</ElText>
-          <ElLink type="primary" @click="$router.push('/backpassword')"
-            >立即找回</ElLink
           >
         </div>
       </div>

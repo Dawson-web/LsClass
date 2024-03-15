@@ -32,79 +32,68 @@ const onSubmit = async () => {
     <main>
       <h1 class="title">注册</h1>
       <div class="register-form-wrapper">
-        <el-radio-group v-model="userType" size="large">
+        <el-radio-group
+          v-model="userType"
+          style="display: flex; justify-content: center; margin-bottom: 20px"
+        >
           <el-radio-button label="教师" value="teacher" />
           <el-radio-button label="学生" value="student" />
         </el-radio-group>
         <el-form
           v-if="userType === 'student'"
-          label-width="left"
+          label-position="right"
+          label-width="auto"
           :model="registerForm"
           class="register-form"
         >
-          <el-form-item label="姓名">
+          <el-form-item label="姓名:">
             <el-input v-model="registerForm.name" />
           </el-form-item>
-          <el-form-item label="性别">
-            <el-select
-              v-model="registerForm.gender"
-              placeholder="性别"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="item in genders"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+          <el-form-item label="性别:">
+            <el-radio-group v-model="registerForm.gender">
+              <el-radio value="男">男</el-radio>
+              <el-radio value="女">女</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="生日">
+          <el-form-item label="生日:">
             <el-input v-model="registerForm.birth" />
           </el-form-item>
-          <el-form-item label="电话">
+          <el-form-item label="电话:">
             <el-input v-model="registerForm.phoneNum" />
           </el-form-item>
-          <el-form-item label="邮箱">
+          <el-form-item label="邮箱:">
             <el-input v-model="registerForm.email" />
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码:">
             <el-input v-model="registerForm.password" />
           </el-form-item>
-          <el-form-item label="地址">
+          <el-form-item label="地址:">
             <el-input v-model="registerForm.address" />
           </el-form-item>
         </el-form>
         <el-form
           v-else-if="userType === 'teacher'"
-          label-width="left"
+          label-position="right"
+          label-width="auto"
           :model="registerForm"
           class="register-form"
         >
-          <el-form-item label="姓名">
+          <el-form-item label="姓名:">
             <el-input v-model="registerForm.nickname" />
           </el-form-item>
-          <el-form-item label="性别">
-            <el-select
-              v-model="registerForm.gender"
-              placeholder="性别"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="item in genders"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+          <el-form-item label="性别:">
+            <el-radio-group v-model="registerForm.gender">
+              <el-radio value="男">男</el-radio>
+              <el-radio value="女">女</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="电话">
+          <el-form-item label="电话:">
             <el-input v-model="registerForm.phoneNum" />
           </el-form-item>
-          <el-form-item label="邮箱">
+          <el-form-item label="邮箱:">
             <el-input v-model="registerForm.email" />
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码:">
             <el-input v-model="registerForm.password" />
           </el-form-item>
         </el-form>

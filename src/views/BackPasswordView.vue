@@ -26,31 +26,39 @@ const onSubmit = async () => {
     </header>
     <main>
       <h1 class="title">找回密码</h1>
-      <div class="register-form-wrapper">
-        <el-radio-group v-model="userType" size="large">
+      <div class="backpassword-form-wrapper">
+        <el-radio-group
+          v-model="userType"
+          style="display: flex; justify-content: center; margin-bottom: 20px"
+        >
           <el-radio-button label="教师" value="teacher" />
           <el-radio-button label="学生" value="student" />
         </el-radio-group>
         <el-form
-          v-if="userType === 'student'"
-          label-width="left"
+          label-position="right"
+          label-width="auto"
           :model="backPasswordForm"
-          class="register-form"
+          class="backpassword-form"
         >
-          <el-form-item label="邮箱">
+          <el-form-item label="邮箱：">
             <el-input v-model="backPasswordForm.email" />
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码：">
             <el-input v-model="backPasswordForm.pwd" />
           </el-form-item>
-          <el-form-item label="确认密码">
+          <el-form-item label="确认密码：">
             <el-input v-model="backPasswordForm.confirmPwd" />
-            <el-form-item label="验证码">
+          </el-form-item>
+          <el-form-item label="验证码：">
+            <div style="display: flex; flex-wrap: nowrap; gap: 10px">
               <el-input v-model="backPasswordForm.code" />
-              <el-button type="primary" @click="getEmailcode"
-                >Primary</el-button
+              <el-button
+                type="primary"
+                @click="getEmailcode"
+                style="font-size: 12px"
+                >获取验证码</el-button
               >
-            </el-form-item>
+            </div>
           </el-form-item>
         </el-form>
 
@@ -96,12 +104,12 @@ main {
   font-weight: 200;
 }
 
-.register-form-wrapper {
+.backpassword-form-wrapper {
   width: 280px;
   padding: 3rem 2rem;
   background-color: #fff;
   border-radius: $border-radius-lg;
-  .register-form {
+  .backpassword-form {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;

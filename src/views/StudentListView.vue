@@ -46,26 +46,78 @@ const getUserList = async () => {
 </script>
 
 <template>
-  <el-select
-    v-model="type"
-    placeholder="Select"
-    style="width: 140px"
-    @change="getUserList"
-  >
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    />
-  </el-select>
-  <div v-for="item in userlist" :key="item.id">
-    <p>{{ item.name ? item.name : item.nickname }}</p>
-    <p>{{ item.gender }}</p>
-    <p>{{ item.email }}</p>
-    <p>{{ item.phoneNum }}</p>
-    <p></p>
+  <div class="app-container">
+    <el-select
+      v-model="type"
+      placeholder="Select"
+      class="custom-select"
+      @change="getUserList"
+    >
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+        class="custom-option"
+      />
+    </el-select>
+    <div class="user-list">
+      <div v-for="item in userlist" :key="item.id" class="user-card">
+        <h3 class="user-name">{{ item.name ? item.name : item.nickname }}</h3>
+        <p class="user-info">{{ item.gender }}</p>
+        <p class="user-info">{{ item.email }}</p>
+        <p class="user-info">{{ item.phoneNum }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.app-container {
+  background-color: #eee;
+  padding: 30px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-select {
+  width: 200px;
+  font-size: 16px;
+  background-color: #fafafa;
+  color: #333333;
+  margin-bottom: 30px;
+  border-radius: 4px;
+}
+
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.user-card {
+  background-color: #fafafa;
+  color: #333333;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  width: 28%;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.user-name {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.user-info {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+</style>

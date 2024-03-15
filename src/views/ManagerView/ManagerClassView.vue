@@ -67,7 +67,7 @@ const doCreateClass = async () => {
 </script>
 
 <template>
-  <div>
+  <div style="background-color: #eee; padding: 30px; border-radius: 15px">
     <el-row :gutter="12">
       <el-col :span="8" :key="item.id" v-for="item in classList">
         <el-card shadow="hover" class="competion-card"
@@ -129,7 +129,11 @@ const doCreateClass = async () => {
 <style lang="scss" scoped>
 .competion-card {
   height: 150px;
+  border-radius: 15px;
   margin-top: 10px;
+  &:hover {
+    transform: scale(1.02);
+  }
   .type {
     font-size: 12px;
     color: #999;

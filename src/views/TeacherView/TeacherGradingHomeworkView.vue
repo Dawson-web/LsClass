@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useTeacherStore } from "@/stores/teacher";
+import { ElMessage } from "element-plus";
 import { onMounted, ref } from "vue";
 const editVisible = ref(false);
 const gradeHomeWorkForm = ref({});
@@ -31,15 +32,23 @@ const gradeHomework = async (id: number) => {
 const cancleGradeHomework = () => {
   gradeHomeworkInfo.value = {};
   editVisible.value = false;
+  ElMessage({
+    message: "取消批改",
+  });
 };
 const doGradeHomework = async () => {
   await teacherStore.gradeHomework(gradeHomeWorkForm.value);
   editVisible.value = false;
+  getHomeworkCondition();
+  ElMessage({
+    message: "完成作业批改",
+    type: "success",
+  });
 };
 </script>
 
 <template>
-  <div>
+  <div class="correct-box">
     <h1>批改作业</h1>
     <el-select
       v-model="homeworkId"
@@ -64,18 +73,21 @@ const doGradeHomework = async () => {
           ><h4>{{ item.studentName }}</h4>
           <div>
             <div class="bottom">
-              <span class="type">作业序列号：{{ item.title }}</span>
-              <span class="type">作业：{{ item.fileSolutionUrl }}</span>
-              <a
-                href="item.fileSolutionUrl"
-                download="abc.png"
-                target="view_window"
-                >下载</a
+              <el-text class="type">作业序列号：{{ item.title }}</el-text>
+              <el-text class="type">疑问：{{ item.question }}</el-text>
+              <el-text class="type">状态：{{ item.status }}</el-text>
+              <el-text class="type">分数：{{ item.score }}</el-text>
+              <el-text class="type">答疑：{{ item.answering }}</el-text>
+              <el-link
+                style="align-self: flex-start; font-size: 12px"
+                type="primary"
+                :href="item.fileSolutionUrl"
+                target="_blank"
+                >下载附件</el-link
               >
-              <span class="type">疑问{{ item.question }}</span>
-              <span class="type">状态{{ item.status }}</span>
             </div>
           </div>
+          <br />
           <el-button @click="gradeHomework(item.id)">批改</el-button>
         </el-card>
       </el-col>
@@ -87,7 +99,7 @@ const doGradeHomework = async () => {
       width="600"
     >
       <el-form label-width="auto" style="max-width: 600px">
-        <el-form-item label="打分">
+        <el-form-item label="打分:">
           <el-input-number
             v-model="gradeHomeWorkForm.score"
             :min="1"
@@ -95,48 +107,62 @@ const doGradeHomework = async () => {
             controls-position="right"
           />
         </el-form-item>
-        <el-form-item label="答疑">
+        <el-form-item label="答疑:">
           <el-input
             v-model="gradeHomeWorkForm.answering"
-            style="width: 240px"
+            style="width: 500px"
             :rows="2"
             type="textarea"
             placeholder="Please input"
           />
         </el-form-item>
       </el-form>
-      <el-button @="cancleGradeHomework">Default</el-button>
-      <el-button type="primary" @click="doGradeHomework">Primary</el-button>
+      <div style="text-align: center">
+        <el-button @click="cancleGradeHomework">取消</el-button>
+        <el-button type="primary" @click="doGradeHomework">确认</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.homework-card {
-  .type {
-    font-size: 12px;
-    color: #999;
-  }
+.correct-box {
+  background-color: #eee;
+  padding: 30px;
+  border-radius: 15px;
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  .homework-card {
     gap: 10px;
-  }
+    margin-top: 10px;
+    border-radius: 15px;
+    &:hover {
+      transform: scale(1.02);
+    }
+    .type {
+      align-self: flex-start;
+      font-size: 12px;
+      color: #999;
+    }
 
-  .desc {
-    height: 80px;
-    width: 100%;
-    overflow: hidden;
-  }
-  .link {
-    float: right;
-    margin-top: 8px;
-    padding: 0;
-    min-height: auto;
+    .bottom {
+      margin-top: 13px;
+      line-height: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .desc {
+      height: 80px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .link {
+      float: right;
+      margin-top: 8px;
+      padding: 0;
+      min-height: auto;
+    }
   }
 }
 </style>

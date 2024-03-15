@@ -85,8 +85,10 @@ const doCommitHomework = async () => {
           />
         </el-form-item>
       </el-form>
-      <el-button @click="cancleCommitHomework">取消</el-button>
-      <el-button type="primary" @click="doCommitHomework">提交</el-button>
+      <div style="text-align: center">
+        <el-button @click="cancleCommitHomework">取消</el-button>
+        <el-button type="primary" @click="doCommitHomework">提交</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>

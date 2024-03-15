@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { usePublicStore } from "@/stores/public";
 import { useStudentStore } from "@/stores/student";
+import { ElMessage } from "element-plus";
 import { onMounted, ref } from "vue";
 
 const studentStore = useStudentStore();
@@ -23,6 +24,9 @@ const commitHomework = (id: number) => {
 const cancleCommitHomework = () => {
   homeworkInfo.value = {};
   commitVisible.value = false;
+  ElMessage({
+    message: "取消提交",
+  });
 };
 const fixContent = async () => {
   let fileInput = document.getElementById("myFile");
@@ -40,24 +44,31 @@ const doCommitHomework = async () => {
   await fixContent();
   await studentStore.commitStudentHomework(homeworkInfo.value);
   commitVisible.value = false;
+  ElMessage({
+    message: "作业提交成功",
+    type: "success",
+  });
 };
 </script>
 
 <template>
-  <div>
+  <div style="background-color: #eee; padding: 30px; border-radius: 15px">
     <el-row :gutter="12">
       <el-col :span="8" :key="item.id" v-for="item in homeworkList">
         <el-card shadow="hover" class="homework-card"
           ><h4>{{ item.title }}</h4>
           <div>
             <div class="bottom">
-              <span class="type">作业序列号：{{ item.id }}</span>
-              <span class="type">课程名：{{ item.courseName }}</span>
-              <span class="type">任课老师：{{ item.teacherName }}</span>
-              <span class="type">学生：{{ item.studentName }}</span>
-              <span class="type">作业状态：{{ item.status }}</span>
-              <span class="type">作业分数：{{ item.score }}</span>
-              <el-link type="primary" :href="item.homeWorkInfo.fileUrl"
+              <el-text class="type">作业序列号：{{ item.id }}</el-text>
+              <el-text class="type">课程名：{{ item.courseName }}</el-text>
+              <el-text class="type">任课老师：{{ item.teacherName }}</el-text>
+              <el-text class="type">学生：{{ item.studentName }}</el-text>
+              <el-text class="type">作业状态：{{ item.status }}</el-text>
+              <el-text class="type">作业分数：{{ item.score }}</el-text>
+              <el-link
+                type="primary"
+                :href="item.homeWorkInfo.fileUrl"
+                target="_blank"
                 >下载附件</el-link
               >
             </div>
@@ -74,30 +85,30 @@ const doCommitHomework = async () => {
     >
       <el-form
         label-width="auto"
+        label-position="right"
         :model="homeworkInfo"
         style="max-width: 600px"
       >
         <el-form-item label="文本答案">
           <el-input
-            style="width: 240px"
+            style="width: 500px"
             v-model="homeworkInfo.solution"
             :rows="2"
             type="textarea"
             placeholder="Please input"
           />
         </el-form-item>
-        <el-form-item label="作业文件">
-          <el-form-item label="附件">
-            <el-input
-              v-model="homeworkInfo.fileSolutionUrl"
-              type="file"
-              id="myFile"
-            />
-          </el-form-item>
+
+        <el-form-item label="附件">
+          <el-input
+            v-model="homeworkInfo.fileSolutionUrl"
+            type="file"
+            id="myFile"
+          />
         </el-form-item>
         <el-form-item label="疑问">
           <el-input
-            style="width: 240px"
+            style="width: 500px"
             :rows="2"
             type="textarea"
             v-model="homeworkInfo.question"
@@ -105,23 +116,33 @@ const doCommitHomework = async () => {
           />
         </el-form-item>
       </el-form>
-      <el-button @click="cancleCommitHomework">取消</el-button>
-      <el-button type="primary" @click="doCommitHomework">确认</el-button>
+      <div style="text-align: center">
+        <el-button @click="cancleCommitHomework">取消</el-button>
+        <el-button type="primary" @click="doCommitHomework">确认</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .homework-card {
+  margin-top: 10px;
+  border-radius: 15px;
+  &:hover {
+    transform: scale(1.02);
+  }
   .type {
+    align-self: flex-start;
     font-size: 12px;
     color: #999;
   }
 
   .bottom {
+    height: 70px;
     margin-top: 13px;
     line-height: 12px;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 10px;

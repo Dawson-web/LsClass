@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useManagerStore } from "@/stores/manager";
 import { useStudentStore } from "@/stores/student";
+import { ElMessage } from "element-plus";
 import { onMounted, ref } from "vue";
 
 const form = ref({});
@@ -16,19 +17,20 @@ onMounted(async () => {
   departmentList.value = await managerStore.getDepartment();
 });
 
-const onSubmit = () => {
-  console.log("submit!");
-};
 const update = ref(true);
 const updateStudentInfo = async () => {
   await studentStore.updateStudentInfo(form.value);
   form.value = await studentStore.getStudentInfo();
   update.value = true;
+  ElMessage({
+    message: "个人信息更新成功",
+    type: "success",
+  });
 };
 </script>
 <template>
   <el-card
-    style="width: 480px; margin: 0 auto; margin-top: 20vh"
+    style="width: 480px; margin: 0 auto; margin-top: 20vh; border-radius: 20px"
     shadow="always"
   >
     <el-form :model="form" label-width="auto" style="max-width: 600px">
@@ -80,8 +82,10 @@ const updateStudentInfo = async () => {
         </el-select>
       </el-form-item>
     </el-form>
-    <el-button @click="update = false">开始更改</el-button>
-    <el-button type="primary" @click="updateStudentInfo">确认</el-button>
+    <div style="text-align: center">
+      <el-button @click="update = false">开始更改</el-button>
+      <el-button type="primary" @click="updateStudentInfo">确认</el-button>
+    </div>
   </el-card>
 </template>
 

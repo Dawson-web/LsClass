@@ -61,7 +61,7 @@ const doCreateCourse = async () => {
 </script>
 
 <template>
-  <div>
+  <div style="background-color: #eee; padding: 30px; border-radius: 15px">
     <el-row :gutter="12">
       <el-col :span="8" :key="item.courseId" v-for="item in courseList">
         <el-card shadow="hover" class="course-card"
@@ -202,8 +202,12 @@ const doCreateCourse = async () => {
 
 <style lang="scss" scoped>
 .course-card {
-  height: 300px;
+  height: 240px;
   margin-top: 10px;
+  border-radius: 15px;
+  &:hover {
+    transform: scale(1.02);
+  }
   .type {
     font-size: 12px;
     color: #999;

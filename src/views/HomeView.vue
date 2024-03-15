@@ -4,7 +4,7 @@ import DotBackground from "@/components/DotBackground.vue";
 <template>
   <div class="home">
     <main>
-      <h2 class="slogan">全国中小学生</h2>
+      <h2 class="slogan">Ls.Class</h2>
       <h1 class="title">林森课堂</h1>
       <h3 class="status">Get Start From Now ~</h3>
       <div class="register-btn-wrapper">
