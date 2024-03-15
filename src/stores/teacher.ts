@@ -1,9 +1,9 @@
 import {
-  checkoutHomeworkAPI,
   createHomeworkAPI,
   getHomeworkFishConditionAPI,
   getTeacherHomeworkAPI,
   getTeacherInfoAPI,
+  gradeHomeworkAPI,
   updateTeacherInfoAPI,
 } from "@/api/type";
 import { defineStore } from "pinia";
@@ -24,10 +24,11 @@ export const useTeacherStore = defineStore("teacher", () => {
     return res.data.data;
   }
   async function getHomeworkFishCondition(homeworkId: number) {
-    await getHomeworkFishConditionAPI(homeworkId);
+    const res = await getHomeworkFishConditionAPI(homeworkId);
+    return res.data.data;
   }
-  async function checkoutHomework(form: any) {
-    await checkoutHomeworkAPI(form);
+  async function gradeHomework(form: any) {
+    await gradeHomeworkAPI(form);
   }
   return {
     getTeacherInfo,
@@ -35,6 +36,6 @@ export const useTeacherStore = defineStore("teacher", () => {
     createHomework,
     getTeacherHomework,
     getHomeworkFishCondition,
-    checkoutHomework,
+    gradeHomework,
   };
 });

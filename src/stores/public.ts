@@ -1,5 +1,6 @@
 import {
   backPasswordAPI,
+  fileMethodsAPI,
   getAnnouncementAPI,
   getEmailCodeAPI,
   getStudentListAPI,
@@ -31,6 +32,10 @@ export const usePublicStore = defineStore("public", () => {
     const res = await getStudentListAPI(courseId);
     return res.data.data;
   }
+  async function fileMethods(url: any) {
+    const res = await fileMethodsAPI(url);
+    return res.data.data;
+  }
   return {
     userRegister,
     userLogin,
@@ -38,5 +43,6 @@ export const usePublicStore = defineStore("public", () => {
     getEmailCode,
     backPassword,
     getStudentList,
+    fileMethods,
   };
 });

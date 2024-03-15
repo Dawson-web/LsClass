@@ -1,20 +1,45 @@
 <script lang="ts" setup>
+import { usePublicStore } from "@/stores/public";
 import { useStudentStore } from "@/stores/student";
 import { onMounted, ref } from "vue";
 
 const studentStore = useStudentStore();
-
+const publicStore = usePublicStore();
 const homeworkList = ref([]);
-
-const updateVisible = ref(false);
+const homeworkInfo = ref({});
+const fileUrl = new FormData();
+const commitVisible = ref(false);
 
 onMounted(async () => {
   homeworkList.value = await studentStore.getStudentHomework();
   console.log(homeworkList.value);
 });
 
-const updateHomework = (form: any) => {
-  updateVisible.value = true;
+const commitHomework = (id: number) => {
+  commitVisible.value = true;
+  homeworkInfo.value.homeworkId = id;
+};
+
+const cancleCommitHomework = () => {
+  homeworkInfo.value = {};
+  commitVisible.value = false;
+};
+const fixContent = async () => {
+  let fileInput = document.getElementById("myFile");
+  fileUrl.append(
+    "file",
+    fileInput.files[0],
+    homeworkInfo.value.fileSolutionUrl
+  );
+  var pathSegments = await publicStore.fileMethods(fileUrl);
+  homeworkInfo.value.fileSolutionUrl =
+    "http://8.137.11.172/forest/" + pathSegments.substring(22);
+};
+
+const doCommitHomework = async () => {
+  await fixContent();
+  await studentStore.commitStudentHomework(homeworkInfo.value);
+  commitVisible.value = false;
 };
 </script>
 
@@ -32,15 +57,18 @@ const updateHomework = (form: any) => {
               <span class="type">学生：{{ item.studentName }}</span>
               <span class="type">作业状态：{{ item.status }}</span>
               <span class="type">作业分数：{{ item.score }}</span>
+              <el-link type="primary" :href="item.homeWorkInfo.fileUrl"
+                >下载附件</el-link
+              >
             </div>
           </div>
-          <el-button text @click="updateHomework(form)">提交作业</el-button>
+          <el-button text @click="commitHomework(item.id)">提交作业</el-button>
         </el-card>
       </el-col>
     </el-row>
     <el-dialog
       style="display: flex; flex-direction: column"
-      v-model="updateVisible"
+      v-model="commitVisible"
       title="提交作业"
       width="600"
     >
@@ -52,42 +80,33 @@ const updateHomework = (form: any) => {
         <el-form-item label="文本答案">
           <el-input
             style="width: 240px"
+            v-model="homeworkInfo.solution"
             :rows="2"
             type="textarea"
             placeholder="Please input"
           />
         </el-form-item>
         <el-form-item label="作业文件">
-          <el-upload
-            ref="upload"
-            class="upload-demo"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-            :limit="1"
-            :on-exceed="handleExceed"
-            :auto-upload="false"
-          >
-            <template #trigger>
-              <el-button type="primary">select file</el-button>
-            </template>
-            <el-button class="ml-3" type="success" @click="submitUpload">
-              upload to server
-            </el-button>
-            <template #tip>
-              <div class="el-upload__tip text-red">
-                limit 1 file, new file will cover the old file
-              </div>
-            </template>
-          </el-upload>
+          <el-form-item label="附件">
+            <el-input
+              v-model="homeworkInfo.fileSolutionUrl"
+              type="file"
+              id="myFile"
+            />
+          </el-form-item>
         </el-form-item>
         <el-form-item label="疑问">
           <el-input
             style="width: 240px"
             :rows="2"
             type="textarea"
+            v-model="homeworkInfo.question"
             placeholder="Please input"
           />
         </el-form-item>
       </el-form>
+      <el-button @click="cancleCommitHomework">取消</el-button>
+      <el-button type="primary" @click="doCommitHomework">确认</el-button>
     </el-dialog>
   </div>
 </template>

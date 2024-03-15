@@ -48,6 +48,12 @@ async function onSubmit() {
             >立即注册</ElLink
           >
         </div>
+        <div style="display: flex; align-items: center; margin-top: 1rem">
+          <ElText>忘记密码?</ElText>
+          <ElLink type="primary" @click="$router.push('/backpassword')"
+            >立即找回</ElLink
+          >
+        </div>
       </div>
     </main>
     <DotBackground />

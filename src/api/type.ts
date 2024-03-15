@@ -3,6 +3,18 @@ import request from "./index";
 const getToken = () => {
   return localStorage.getItem("token");
 };
+
+export const fileMethodsAPI = (form: any) => {
+  return request({
+    url: `/file/uploadFile`,
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    },
+    data: form,
+  });
+};
+
 // 公用
 export const registerAPI = (form: any) => {
   return request({
@@ -338,7 +350,7 @@ export const getHomeworkFishConditionAPI = (homeworkId: number) => {
     },
   });
 };
-export const checkoutHomeworkAPI = (form: any) => {
+export const gradeHomeworkAPI = (form: any) => {
   return request({
     url: `/teacher/correctHomework`,
     method: "PUT",

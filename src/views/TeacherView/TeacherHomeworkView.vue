@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { useManagerStore } from "@/stores/manager";
+import { usePublicStore } from "@/stores/public";
 import { useTeacherStore } from "@/stores/teacher";
 import { Edit } from "@element-plus/icons-vue";
 import { onMounted, ref } from "vue";
 const editVisible = ref(false);
 const homeWorkForm = ref({});
+const publicStore = usePublicStore();
 const teacherStore = useTeacherStore();
 const managerStore = useManagerStore();
 const courseList = ref([]);
 const homeworkList = ref([]);
-
+const fileUrl = new FormData();
 const getTeacherHomework = async () => {
   homeworkList.value = await teacherStore.getTeacherHomework();
 };
@@ -24,9 +26,20 @@ const cancleCreateHomework = async () => {
   homeWorkForm.value = {};
 };
 
+const fixContent = async () => {
+  let fileInput = document.getElementById("myFile");
+  fileUrl.append("file", fileInput.files[0], homeWorkForm.value.fileUrl);
+  var pathSegments = await publicStore.fileMethods(fileUrl);
+  console.log(pathSegments);
+
+  homeWorkForm.value.fileUrl =
+    "http://8.137.11.172/forest/" + pathSegments.substring(22);
+  console.log(homeWorkForm.value.fileUrl);
+};
+
 const doCreateHomework = async () => {
-  homeWorkForm.value.dueDate =
-    homeWorkForm.value.dueDate * 60 * 60 * 1000 + Date.now();
+  await fixContent();
+  homeWorkForm.value.dueDate = 1720496952373;
   await teacherStore.createHomework(homeWorkForm.value);
   editVisible.value = false;
   getTeacherHomework();
@@ -86,7 +99,7 @@ const doCreateHomework = async () => {
         <el-input v-model="homeWorkForm.description" />
       </el-form-item>
       <el-form-item label="附件">
-        <el-input v-model="homeWorkForm.fileUrl" type="file" />
+        <el-input v-model="homeWorkForm.fileUrl" type="file" id="myFile" />
       </el-form-item>
     </el-form>
     <el-button @="cancleCreateHomework">Default</el-button>

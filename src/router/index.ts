@@ -104,6 +104,11 @@ const router = createRouter({
           path: "/teacher/studentlist",
           component: () => import("@/views/StudentListView.vue"),
         },
+        {
+          path: "/teacher/homeworkcontidion",
+          component: () =>
+            import("@/views/TeacherView/TeacherGradingHomeworkView.vue"),
+        },
       ],
     },
     {
