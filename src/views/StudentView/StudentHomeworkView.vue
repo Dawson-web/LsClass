@@ -65,15 +65,21 @@ const doCommitHomework = async () => {
               <el-text class="type">学生：{{ item.studentName }}</el-text>
               <el-text class="type">作业状态：{{ item.status }}</el-text>
               <el-text class="type">作业分数：{{ item.score }}</el-text>
-              <el-link
-                type="primary"
-                :href="item.homeWorkInfo.fileUrl"
-                target="_blank"
-                >下载附件</el-link
+              <el-text class="type">
+                附件:
+                <el-link
+                  type="primary"
+                  :href="item.homeWorkInfo.fileUrl"
+                  target="_blank"
+                  style="font-size: 12px"
+                  >下载附件</el-link
+                ></el-text
               >
             </div>
           </div>
-          <el-button text @click="commitHomework(item.id)">提交作业</el-button>
+          <el-button text type="primary" @click="commitHomework(item.id)"
+            >提交作业</el-button
+          >
         </el-card>
       </el-col>
     </el-row>

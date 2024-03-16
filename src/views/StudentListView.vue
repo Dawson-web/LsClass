@@ -41,6 +41,7 @@ const getUserList = async () => {
     await getTeacherList();
   } else {
     ElMessage.error("您没有权限查看");
+    type.value = "student";
   }
 };
 </script>
@@ -63,10 +64,12 @@ const getUserList = async () => {
     </el-select>
     <div class="user-list">
       <div v-for="item in userlist" :key="item.id" class="user-card">
-        <h3 class="user-name">{{ item.name ? item.name : item.nickname }}</h3>
-        <p class="user-info">{{ item.gender }}</p>
-        <p class="user-info">{{ item.email }}</p>
-        <p class="user-info">{{ item.phoneNum }}</p>
+        <h1 class="user-name">
+          用户：{{ item.name ? item.name : item.nickname }}
+        </h1>
+        <p class="user-info">性别：{{ item.gender }}</p>
+        <p class="user-info">邮箱：{{ item.email }}</p>
+        <p class="user-info">电话：{{ item.phoneNum }}</p>
       </div>
     </div>
   </div>
@@ -105,6 +108,7 @@ const getUserList = async () => {
   border-radius: 10px;
   margin-bottom: 30px;
   width: 28%;
+  overflow: hidden;
   transition: all 0.3s ease;
   &:hover {
     transform: scale(1.02);
@@ -112,12 +116,10 @@ const getUserList = async () => {
 }
 
 .user-name {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 18px;
 }
 
 .user-info {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14px;
 }
 </style>

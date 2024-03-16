@@ -78,7 +78,9 @@ const doCreateClass = async () => {
               <span class="type">序列号：{{ item.id }}</span>
             </div>
           </div>
-          <el-button text @click="updateClass(item)">修改班级</el-button>
+          <el-button text type="primary" @click="updateClass(item)"
+            >修改班级</el-button
+          >
           <el-button text type="danger" @click="deleteClass(item.id)"
             >删除班级
           </el-button>

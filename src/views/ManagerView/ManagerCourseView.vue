@@ -74,7 +74,9 @@ const doCreateCourse = async () => {
               <p class="type">课程介绍：{{ item.description }}</p>
             </div>
           </div>
-          <el-button text @click="updateCourse(item)">修改课程</el-button>
+          <el-button text type="primary" @click="updateCourse(item)"
+            >修改课程</el-button
+          >
           <el-button text type="danger" @click="deleteCourse(item.courseId)"
             >删除课程
           </el-button>

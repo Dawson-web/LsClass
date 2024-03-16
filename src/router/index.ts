@@ -52,7 +52,7 @@ const router = createRouter({
           component: () => import("@/views/ManagerView/ManagerClassView.vue"),
         },
         {
-          path: "/manager/studentlist",
+          path: "/manager/userlist",
           component: () => import("@/views/StudentListView.vue"),
         },
       ],
