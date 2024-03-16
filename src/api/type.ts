@@ -1,11 +1,11 @@
 //此文件用于封装axios
-import request from "./index";
+import DoRequest from "./index";
 const getToken = () => {
   return localStorage.getItem("token");
 };
 
 export const fileMethodsAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/file/uploadFile`,
     method: "POST",
     headers: {
@@ -17,28 +17,28 @@ export const fileMethodsAPI = (form: any) => {
 
 // 公用
 export const registerAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/${localStorage.getItem("usertype")}/register`,
     method: "POST",
     data: form,
   });
 };
 export const loginAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/${localStorage.getItem("usertype")}/login`,
     method: "POST",
     data: form,
   });
 };
 export const getEmailCodeAPI = (email: string) => {
-  return request({
+  return DoRequest({
     url: `/${localStorage.getItem("usertype")}/getEmailCode`,
     method: "POST",
     params: { email },
   });
 };
 export const backPasswordAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/${localStorage.getItem("usertype")}/backPassword`,
     method: "POST",
     data: form,
@@ -46,7 +46,7 @@ export const backPasswordAPI = (form: any) => {
 };
 // 获取老师列表
 export const getTeacherListAPI = () => {
-  return request({
+  return DoRequest({
     url: `/teacher/getTeachers`,
     method: "POST",
     headers: {
@@ -55,7 +55,7 @@ export const getTeacherListAPI = () => {
   });
 };
 export const getStudentListAPI = (courseId: number) => {
-  return request({
+  return DoRequest({
     url: `/student/getStudents`,
     method: "POST",
     headers: {
@@ -69,7 +69,7 @@ export const getStudentListAPI = (courseId: number) => {
 
 //公告
 export const getAnnouncementAPI = (type: number) => {
-  return request({
+  return DoRequest({
     url: `/announcement/getAnnouncements`,
     method: "POST",
     params: {
@@ -82,7 +82,7 @@ export const getAnnouncementAPI = (type: number) => {
   });
 };
 export const deleteAnnouncementAPI = (id: number) => {
-  return request({
+  return DoRequest({
     url: `/announcement/deleteAnnouncement`,
     method: "DELETE",
     headers: {
@@ -94,7 +94,7 @@ export const deleteAnnouncementAPI = (id: number) => {
   });
 };
 export const createAnnouncementAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/announcement/createAnnouncement`,
     method: "POST",
     headers: {
@@ -104,7 +104,7 @@ export const createAnnouncementAPI = (form: any) => {
   });
 };
 export const updateAnnouncementAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/announcement/updateAnnouncement`,
     method: "PUT",
     headers: {
@@ -115,7 +115,7 @@ export const updateAnnouncementAPI = (form: any) => {
 };
 // 院系
 export const createDepartmentAPI = (departmentName: string) => {
-  return request({
+  return DoRequest({
     url: `/department/createDepartment`,
     method: "POST",
     headers: {
@@ -127,7 +127,7 @@ export const createDepartmentAPI = (departmentName: string) => {
   });
 };
 export const getDepartmentAPI = () => {
-  return request({
+  return DoRequest({
     url: `/department/getDepartments`,
     method: "POST",
     headers: {
@@ -136,7 +136,7 @@ export const getDepartmentAPI = () => {
   });
 };
 export const deleteDepartmentAPI = (id: number) => {
-  return request({
+  return DoRequest({
     url: `/department/deleteDepartment`,
     method: "DELETE",
     headers: {
@@ -148,7 +148,7 @@ export const deleteDepartmentAPI = (id: number) => {
   });
 };
 export const updateDepartmentAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/department/updateDepartment`,
     method: "PUT",
     headers: {
@@ -159,7 +159,7 @@ export const updateDepartmentAPI = (form: any) => {
 };
 // 班级
 export const createClassAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/class/createClass`,
     method: "POST",
     headers: {
@@ -169,7 +169,7 @@ export const createClassAPI = (form: any) => {
   });
 };
 export const getClassAPI = () => {
-  return request({
+  return DoRequest({
     url: `/class/getClasses`,
     method: "POST",
     headers: {
@@ -178,7 +178,7 @@ export const getClassAPI = () => {
   });
 };
 export const deleteClassAPI = (id: number) => {
-  return request({
+  return DoRequest({
     url: `/class/deleteClass`,
     method: "DELETE",
     headers: {
@@ -190,7 +190,7 @@ export const deleteClassAPI = (id: number) => {
   });
 };
 export const updateClassAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/class/updateClass`,
     method: "PUT",
     headers: {
@@ -201,7 +201,7 @@ export const updateClassAPI = (form: any) => {
 };
 // 课程
 export const createCourseAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/course/createCourse`,
     method: "POST",
     headers: {
@@ -211,7 +211,7 @@ export const createCourseAPI = (form: any) => {
   });
 };
 export const getCourseAPI = () => {
-  return request({
+  return DoRequest({
     url: `/course/getCourses`,
     method: "POST",
     headers: {
@@ -220,7 +220,7 @@ export const getCourseAPI = () => {
   });
 };
 export const deleteCourseAPI = (id: number) => {
-  return request({
+  return DoRequest({
     url: `/course/deleteCourse`,
     method: "DELETE",
     headers: {
@@ -232,7 +232,7 @@ export const deleteCourseAPI = (id: number) => {
   });
 };
 export const updateCourseAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/course/updateCourse`,
     method: "PUT",
     headers: {
@@ -243,7 +243,7 @@ export const updateCourseAPI = (form: any) => {
 };
 // 管理员
 export const getManagerInfoAPI = () => {
-  return request({
+  return DoRequest({
     url: `/manager/getManagerInfo`,
     method: "POST",
     headers: {
@@ -253,7 +253,7 @@ export const getManagerInfoAPI = () => {
 };
 // 学生
 export const getStudentInfoAPI = () => {
-  return request({
+  return DoRequest({
     url: `/student/getStudentInfo`,
     method: "POST",
     headers: {
@@ -262,7 +262,7 @@ export const getStudentInfoAPI = () => {
   });
 };
 export const updateStudentInfoAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/student/updateStudentInfo`,
     method: "PUT",
     headers: {
@@ -272,7 +272,7 @@ export const updateStudentInfoAPI = (form: any) => {
   });
 };
 export const getStudentHomeworkAPI = () => {
-  return request({
+  return DoRequest({
     url: `/student/getHomeworks`,
     method: "POST",
     headers: {
@@ -281,7 +281,7 @@ export const getStudentHomeworkAPI = () => {
   });
 };
 export const getStudentHomeworkUnFinishedAPI = () => {
-  return request({
+  return DoRequest({
     url: `/student/checkFishedStatus`,
     method: "POST",
     headers: {
@@ -290,7 +290,7 @@ export const getStudentHomeworkUnFinishedAPI = () => {
   });
 };
 export const commitStudentHomeworkAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/student/commitHomework`,
     method: "PUT",
     headers: {
@@ -301,7 +301,7 @@ export const commitStudentHomeworkAPI = (form: any) => {
 };
 // 老师
 export const getTeacherInfoAPI = () => {
-  return request({
+  return DoRequest({
     url: `/teacher/getTeacherInfo`,
     method: "POST",
     headers: {
@@ -310,7 +310,7 @@ export const getTeacherInfoAPI = () => {
   });
 };
 export const updateTeacherInfoAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/teacher/updateTeacherInfo`,
     method: "PUT",
     headers: {
@@ -320,7 +320,7 @@ export const updateTeacherInfoAPI = (form: any) => {
   });
 };
 export const createHomeworkAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/teacher/createHomework`,
     method: "POST",
     headers: {
@@ -330,7 +330,7 @@ export const createHomeworkAPI = (form: any) => {
   });
 };
 export const getTeacherHomeworkAPI = () => {
-  return request({
+  return DoRequest({
     url: `/teacher/getHomeworks`,
     method: "POST",
     headers: {
@@ -339,7 +339,7 @@ export const getTeacherHomeworkAPI = () => {
   });
 };
 export const getHomeworkFishConditionAPI = (homeworkId: number) => {
-  return request({
+  return DoRequest({
     url: `/teacher/getFishCondition`,
     method: "POST",
     params: {
@@ -351,7 +351,7 @@ export const getHomeworkFishConditionAPI = (homeworkId: number) => {
   });
 };
 export const gradeHomeworkAPI = (form: any) => {
-  return request({
+  return DoRequest({
     url: `/teacher/correctHomework`,
     method: "PUT",
     headers: {
@@ -362,7 +362,7 @@ export const gradeHomeworkAPI = (form: any) => {
 };
 // 作业
 export const getHomeworkRankAPI = (homeworkId: string) => {
-  return request({
+  return DoRequest({
     url: `/homework/getRank`,
     method: "POST",
     headers: {
@@ -374,7 +374,7 @@ export const getHomeworkRankAPI = (homeworkId: string) => {
   });
 };
 export const getHomeworkScoreDistributionAPI = (homeworkId: string) => {
-  return request({
+  return DoRequest({
     url: `/homework/getScoreDistribution`,
     method: "POST",
     headers: {

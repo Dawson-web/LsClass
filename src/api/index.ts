@@ -1,6 +1,10 @@
+import { apiConfig } from "@/config";
+import router from "@/router";
 import axios from "axios";
+import { ElMessage } from "element-plus";
+
 const request = axios.create({
-  baseURL: "http://8.137.11.172:7121",
+  baseURL: apiConfig.baseURL,
   timeout: 5000,
 });
 
@@ -24,10 +28,29 @@ request.interceptors.response.use(
     return response;
   },
   function (error) {
-    // 超出 2xx 范围的状态码都会触发该函数。
-    // 对响应错误做点什么
+    if (error.message.startsWith("timeout")) {
+      return Promise.reject("请求超时");
+    }
+    if (error.response.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("usertype");
+      ElMessage({
+        showClose: true,
+        message: error as string,
+        type: "error",
+      });
+      // 引导用户返回到登录页面
+      router.push("/login");
+    }
+    if (error.response.status === 500) {
+      return Promise.reject("服务器内部错误");
+    }
     return Promise.reject(error);
   }
 );
+
+export const DoRequest = (requestInfo: any) => {
+  request(requestInfo);
+};
 
 export default request;
