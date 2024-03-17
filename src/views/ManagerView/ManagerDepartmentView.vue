@@ -12,22 +12,25 @@ const departmentName = ref("");
 
 const departmentList = ref([]);
 
+// 获取学院列表
 async function getDepartmentList() {
   departmentList.value = await managerStore.getDepartment();
 }
-
+// 预载
 onMounted(async () => {
   await getDepartmentList();
 });
-
+// 更新学院信息
 const updateDeparment = (form: any) => {
   updateVisible.value = true;
   departmentInfo.value = form;
 };
+// 取消更新学院信息
 const cancleUpdateDeparment = () => {
   updateVisible.value = false;
   departmentInfo.value = {};
 };
+// 确认更新学院信息
 const doUpdateDeparment = async () => {
   const form = {
     id: departmentInfo.value.id,
@@ -37,20 +40,22 @@ const doUpdateDeparment = async () => {
   updateVisible.value = false;
   getDepartmentList();
 };
-
+// 删除学院
 const deleteDepartment = async (id: number) => {
   await managerStore.deleteDepartment(id);
   getDepartmentList();
 };
-
+// 新增学院
 const createDepartment = () => {
   departmentName.value = "";
   editVisible.value = true;
 };
+// 取消新增学院
 const cancleCreateDepartment = () => {
   departmentName.value = "";
   editVisible.value = false;
 };
+// 确认新增学院
 const doCreateDepartment = async () => {
   await managerStore.createDepartment(departmentName.value);
   editVisible.value = false;

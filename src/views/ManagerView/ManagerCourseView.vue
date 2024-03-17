@@ -15,43 +15,49 @@ const departmentList = ref([]);
 const classList = ref([]);
 const TeacherList = ref([]);
 
+// 获取课程信息
 async function getCourseList() {
   courseList.value = await managerStore.getCourse();
 }
-
+// 预载
 onMounted(async () => {
   await getCourseList();
   classList.value = await managerStore.getClass();
   departmentList.value = await managerStore.getDepartment();
   TeacherList.value = await managerStore.getTeacherList();
 });
-
+// 更新课程信息
 const updateCourse = (form: any) => {
   updateVisible.value = true;
   courseInfo.value = form;
 };
+// 取消更新课程信息
 const cancleUpdateCourse = () => {
   updateVisible.value = false;
   courseInfo.value = {};
 };
+// 确认更新课程信息
 const doUpdateCourse = async () => {
   await managerStore.updateCourse(courseInfo.value);
   updateVisible.value = false;
   getCourseList();
 };
+// 删除课程
 const deleteCourse = async (id: number) => {
   await managerStore.deleteCourse(id);
   getCourseList();
 };
-
+// 创建课程
 const createCourse = () => {
   editVisible.value = true;
   newCourseInfo.value = {};
 };
+// 取消创建课程
 const cancleCreateCourse = () => {
   editVisible.value = false;
   newCourseInfo.value = {};
 };
+// 确认创建课程
 const doCreateCourse = async () => {
   (newCourseInfo.value.endDate =
     newCourseInfo.value.endDate * 7 * 24 * 60 * 60 * 1000 + Date.now()),

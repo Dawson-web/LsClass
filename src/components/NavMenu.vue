@@ -36,6 +36,7 @@ import { useStudentStore } from "@/stores/student";
 import { useTeacherStore } from "@/stores/teacher";
 import { onMounted, ref } from "vue";
 const info = ref({});
+// 获取头像
 onMounted(async () => {
   let userType = localStorage.getItem("usertype");
 

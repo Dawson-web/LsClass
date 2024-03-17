@@ -12,18 +12,19 @@ const fileUrl = new FormData();
 const commitVisible = ref(false);
 const topic = ref("");
 
+// 预载
 onMounted(async () => {
   homeworkList.value = await studentStore.getStudentHomework();
   console.log(homeworkList.value);
 });
-
+// 提交作业
 const commitHomework = (id: number, _description: string) => {
   commitVisible.value = true;
   homeworkInfo.value.homeworkId = id;
   topic.value = _description;
   console.log(topic.value);
 };
-
+// 取消提交
 const cancleCommitHomework = () => {
   homeworkInfo.value = {};
   commitVisible.value = false;
@@ -31,6 +32,7 @@ const cancleCommitHomework = () => {
     message: "取消提交",
   });
 };
+// 格式化文件路径
 const fixContent = async () => {
   let fileInput = document.getElementById("myFile");
   fileUrl.append(
@@ -42,7 +44,7 @@ const fixContent = async () => {
   homeworkInfo.value.fileSolutionUrl =
     "http://8.137.11.172/forest/" + pathSegments.substring(22);
 };
-
+// 确认提交
 const doCommitHomework = async () => {
   await fixContent();
   await studentStore.commitStudentHomework(homeworkInfo.value);

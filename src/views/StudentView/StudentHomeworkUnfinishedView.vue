@@ -3,26 +3,29 @@ import { useStudentStore } from "@/stores/student";
 import { onMounted, ref } from "vue";
 const homeworkUnFinishList = ref([]);
 const studentStore = useStudentStore();
+const homeworkInfo = ref({});
 
+const commitVisible = ref(false);
+// 获取未提交作业列表
 const getHomeworkUnFinishList = async () => {
   homeworkUnFinishList.value =
     await studentStore.getStudentHomeworkUnFinished();
 };
-
+// 预载
 onMounted(async () => {
   getHomeworkUnFinishList();
 });
-const homeworkInfo = ref({});
-
-const commitVisible = ref(false);
+// 提交作业
 const commitHomework = (id: number) => {
   commitVisible.value = true;
   homeworkInfo.value.homeworkId = id;
 };
+// 取消提交
 const cancleCommitHomework = () => {
   commitVisible.value = false;
   homeworkInfo.value = {};
 };
+// 确认提交
 const doCommitHomework = async () => {
   await studentStore.commitStudentHomework(homeworkInfo.value);
   commitVisible.value = false;

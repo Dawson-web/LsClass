@@ -28,29 +28,32 @@ const typeOptions = [
 async function typeChange() {
   form.value = await usePubllic.getAnnouncements(type.value);
 }
-
+// 预载
 onMounted(async () => {
   await getAnnouncements();
 });
+// 获取公告
 const getAnnouncements = async () => {
   form.value = await usePubllic.getAnnouncements(type.value);
 };
-``;
+// 取消创建公告
 const cancleCreateAnnouncement = () => {
   editVisible.value = false;
   newAnnouncement.value = {};
 };
+// 创建公告
 const doCreateAnnouncement = async () => {
   newAnnouncement.value.expiryDate = 1677753600000;
   await managerStore.createAnnouncement(newAnnouncement.value);
   editVisible.value = false;
   await getAnnouncements();
 };
-
+// 更新公告
 const updateAccoument = (form: any) => {
   updateVisible.value = true;
   AnnouncementInfo.value = form;
 };
+// 取消更新公告
 const cancleUpdateAccoument = () => {
   updateVisible.value = false;
   AnnouncementInfo.value = {};
@@ -59,6 +62,7 @@ const cancleUpdateAccoument = () => {
     grouping: true,
   });
 };
+// 确认更新公告
 const updateAnnouncement = async () => {
   updateVisible.value = false;
   await managerStore.updateAnnouncement(AnnouncementInfo.value);
@@ -69,7 +73,7 @@ const updateAnnouncement = async () => {
     type: "success",
   });
 };
-
+// 删除公告
 const deleteAnnouncement = async (id: number) => {
   await managerStore.deleteAnnouncement(id);
   getAnnouncements();

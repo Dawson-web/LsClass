@@ -7,28 +7,31 @@ const managerStore = useManagerStore();
 
 const classList = ref([]);
 
-async function getClassList() {
-  classList.value = await managerStore.getClass();
-}
-
-onMounted(async () => {
-  await getClassList();
-});
-
 const updateVisible = ref(false);
 const classInfo = ref({});
 const editVisible = ref(false);
 const className = ref("");
 const major = ref("");
 
+// 获取班级列表
+async function getClassList() {
+  classList.value = await managerStore.getClass();
+}
+// 预载
+onMounted(async () => {
+  await getClassList();
+});
+// 更新班级信息
 const updateClass = (form: any) => {
   updateVisible.value = true;
   classInfo.value = form;
 };
+// 取消更新班级信息
 const cancleUpdateClass = () => {
   updateVisible.value = false;
   classInfo.value = {};
 };
+// 确认更新班级信息
 const doUpdateClass = async () => {
   const form = {
     id: classInfo.value.id,
@@ -39,22 +42,24 @@ const doUpdateClass = async () => {
   updateVisible.value = false;
   getClassList();
 };
-
+// 删除班级
 const deleteClass = async (id: number) => {
   await managerStore.deleteClass(id);
   getClassList();
 };
-
+// 创建班级
 const createClass = () => {
   className.value = "";
   major.value = "";
   editVisible.value = true;
 };
+// 取消创建班级
 const cancleCreateClass = () => {
   className.value = "";
   major.value = "";
   editVisible.value = false;
 };
+// 确认创建班级
 const doCreateClass = async () => {
   const form = {
     className: className.value,

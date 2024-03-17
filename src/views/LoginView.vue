@@ -8,6 +8,7 @@ const loginForm = ref({
   password: "",
 });
 const userType = ref("student");
+// 登录
 async function onSubmit() {
   localStorage.setItem("usertype", userType.value);
   const usePubllic = usePublicStore();

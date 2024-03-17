@@ -9,26 +9,27 @@ const homeworkCondition = ref([]);
 const homeworkList = ref([]);
 const homeworkId = ref();
 const gradeHomeworkInfo = ref({});
+// 获取作业列表
 const getTeacherHomework = async () => {
   homeworkList.value = await teacherStore.getTeacherHomework();
 };
-
+// 获取作业详情
 const getHomeworkCondition = async () => {
   homeworkCondition.value = await teacherStore.getHomeworkFishCondition(
     homeworkId.value
   );
 };
-
+// 预载
 onMounted(async () => {
   await getTeacherHomework();
   getHomeworkCondition();
 });
-
+// 批改作业
 const gradeHomework = async (id: number) => {
   editVisible.value = true;
   gradeHomeWorkForm.value.homeworkStudentId = id;
 };
-
+// 取消批改
 const cancleGradeHomework = () => {
   gradeHomeworkInfo.value = {};
   editVisible.value = false;
@@ -36,6 +37,7 @@ const cancleGradeHomework = () => {
     message: "取消批改",
   });
 };
+// 确认批改
 const doGradeHomework = async () => {
   await teacherStore.gradeHomework(gradeHomeWorkForm.value);
   editVisible.value = false;

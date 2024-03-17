@@ -10,20 +10,20 @@ const departmentList = ref([]);
 const classList = ref([]);
 const birth = ref("");
 const avatarUrl = ref("");
+const update = ref(true);
 
 const publicStore = usePublicStore();
 const managerStore = useManagerStore();
 const studentStore = useStudentStore();
 
+//预载
 onMounted(async () => {
   form.value = await studentStore.getStudentInfo();
   form.value.birth = new Date(form.value.birth);
   classList.value = await managerStore.getClass();
   departmentList.value = await managerStore.getDepartment();
 });
-
-const update = ref(true);
-
+// 格式化文件路径
 const fixContent = async () => {
   if (avatarUrl.valuel !== "") {
     const fileUrl = new FormData();
@@ -35,7 +35,7 @@ const fixContent = async () => {
     avatarUrl.value = "";
   }
 };
-
+// 更新学生信息
 const updateStudentInfo = async () => {
   await fixContent();
   form.value.birth = new Date(Date.parse(birth.value)).getTime();

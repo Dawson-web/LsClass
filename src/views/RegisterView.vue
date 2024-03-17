@@ -4,8 +4,8 @@ import router from "@/router";
 import { usePublicStore } from "@/stores/public";
 import { ref } from "vue";
 const registerForm = ref({});
-
 const userType = ref("student");
+// 注册
 const onSubmit = async () => {
   registerForm.value.birth = new Date(
     Date.parse(registerForm.value.birth)

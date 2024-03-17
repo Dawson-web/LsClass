@@ -6,12 +6,12 @@ import { ref } from "vue";
 const backPasswordForm = ref({});
 const userType = ref("student");
 const usePublic = usePublicStore();
-
+// 获取邮箱验证码
 const getEmailcode = async () => {
   localStorage.setItem("usertype", userType.value);
   await usePublic.getEmailCode(backPasswordForm.value.email);
 };
-
+// 找回密码
 const onSubmit = async () => {
   localStorage.setItem("usertype", userType.value);
   await usePublic.backPassword(backPasswordForm.value);

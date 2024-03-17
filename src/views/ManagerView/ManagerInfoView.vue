@@ -3,6 +3,7 @@ import { useManagerStore } from "@/stores/manager";
 import { onMounted, ref } from "vue";
 
 const form = ref({});
+// 预载获取管理员信息
 onMounted(async () => {
   const managerStore = useManagerStore();
   form.value = await managerStore.getManagerInfo();

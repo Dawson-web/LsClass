@@ -14,13 +14,13 @@ const update = ref(true);
 const publicStore = usePublicStore();
 const managerStore = useManagerStore();
 const teacherStore = useTeacherStore();
-
+// 预载
 onMounted(async () => {
   form.value = await teacherStore.getTeacherInfo();
   courseList.value = await managerStore.getCourse();
   departmentList.value = await managerStore.getDepartment();
 });
-
+// 修改文件路径格式
 const fixContent = async () => {
   if (avatarUrl.valuel !== "") {
     const fileUrl = new FormData();
@@ -32,6 +32,7 @@ const fixContent = async () => {
     avatarUrl.value = "";
   }
 };
+// 更新教师信息
 const updateTeacherInfo = async () => {
   await fixContent();
   await teacherStore.updateTeacherInfo(form.value);
