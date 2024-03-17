@@ -1,6 +1,7 @@
 import {
   createHomeworkAPI,
   getHomeworkFishConditionAPI,
+  getHomeworkScoreDistributionAPI,
   getTeacherHomeworkAPI,
   getTeacherInfoAPI,
   gradeHomeworkAPI,
@@ -30,6 +31,10 @@ export const useTeacherStore = defineStore("teacher", () => {
   async function gradeHomework(form: any) {
     await gradeHomeworkAPI(form);
   }
+  async function getHomeworkScoreDistribution(id: number) {
+    const res = await getHomeworkScoreDistributionAPI(id);
+    return res.data.data;
+  }
   return {
     getTeacherInfo,
     updateTeacherInfo,
@@ -37,5 +42,6 @@ export const useTeacherStore = defineStore("teacher", () => {
     getTeacherHomework,
     getHomeworkFishCondition,
     gradeHomework,
+    getHomeworkScoreDistribution,
   };
 });

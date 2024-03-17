@@ -65,6 +65,18 @@ const doCreateCourse = async () => {
   editVisible.value = false;
   getCourseList();
 };
+// 格式化时间
+const timeConvert = (time: number) => {
+  let date = new Date(time);
+  let year = date.getFullYear();
+  let month = ("0" + (date.getMonth() + 1)).slice(-2); // JavaScript months range from 0 to 11, hence the "+1" and then "0" + to add leading zero
+  let day = ("0" + date.getDate()).slice(-2);
+  let hours = ("0" + date.getHours()).slice(-2);
+  let minutes = ("0" + date.getMinutes()).slice(-2);
+  let seconds = ("0" + date.getSeconds()).slice(-2);
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 </script>
 
 <template>
@@ -78,6 +90,12 @@ const doCreateCourse = async () => {
               <span class="type">所属学院：{{ item.departmentName }}</span>
               <span class="type">任课老师: {{ item.teacherName }}</span>
               <span class="type">班级: {{ item.className }}</span>
+              <span class="type"
+                >开课时间: {{ timeConvert(item.startDate) }}</span
+              >
+              <span class="type"
+                >结课时间: {{ timeConvert(item.endDate) }}</span
+              >
               <p class="type">课程介绍：{{ item.description }}</p>
             </div>
           </div>
@@ -232,7 +250,7 @@ const doCreateCourse = async () => {
 
 <style lang="scss" scoped>
 .course-card {
-  height: 240px;
+  height: auto;
   margin-top: 10px;
   border-radius: 15px;
   &:hover {

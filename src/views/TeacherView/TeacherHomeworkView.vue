@@ -2,14 +2,17 @@
 import { useManagerStore } from "@/stores/manager";
 import { usePublicStore } from "@/stores/public";
 import { useTeacherStore } from "@/stores/teacher";
+import * as echarts from "echarts";
 import { onMounted, ref } from "vue";
 const editVisible = ref(false);
+const scoreVisible = ref(false);
 const homeWorkForm = ref({});
 const publicStore = usePublicStore();
 const teacherStore = useTeacherStore();
 const managerStore = useManagerStore();
 const courseList = ref([]);
 const homeworkList = ref([]);
+
 const fileUrl = new FormData();
 // 获取作业列表
 const getTeacherHomework = async () => {
@@ -57,6 +60,42 @@ const timeConvert = (time: number) => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
+
+const getHomeworkScoreDistribution = async (homeworkId: number) => {
+  scoreVisible.value = true;
+  const scoreData = ref([]);
+  const xAxis = [];
+  const yAxis = [];
+  scoreData.value = Object.entries(
+    await teacherStore.getHomeworkScoreDistribution(homeworkId)
+  ).map(([key, value]) => ({ name: key, value: value }));
+  scoreData.value.forEach((item) => {
+    xAxis.push(item.name);
+    yAxis.push(item.value);
+  });
+
+  var chartDom = document.querySelector("#chart");
+  var myChart = echarts.init(chartDom);
+  var option;
+
+  option = {
+    xAxis: {
+      type: "category",
+      data: xAxis,
+    },
+    yAxis: {
+      type: "value",
+    },
+    series: [
+      {
+        data: yAxis,
+        type: "bar",
+      },
+    ],
+  };
+
+  option && myChart.setOption(option);
+};
 </script>
 
 <template>
@@ -89,6 +128,11 @@ const timeConvert = (time: number) => {
               target="_blank"
               class="link"
               >下载附件</el-link
+            >
+            <el-button
+              type="text"
+              @click="getHomeworkScoreDistribution(item.homeworkId)"
+              >查看分数详情</el-button
             >
           </div>
         </el-card>
@@ -157,6 +201,14 @@ const timeConvert = (time: number) => {
         >
       </div>
     </el-dialog>
+    <el-dialog
+      v-model="scoreVisible"
+      title="分数详情"
+      width="600"
+      class="info-card"
+    >
+      <div id="chart" style="width: 400px; height: 300px"></div
+    ></el-dialog>
   </div>
 </template>
 

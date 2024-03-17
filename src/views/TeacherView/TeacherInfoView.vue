@@ -10,6 +10,7 @@ const departmentList = ref([]);
 const courseList = ref([]);
 const avatarUrl = ref("");
 const update = ref(true);
+const fileUrl = new FormData();
 
 const publicStore = usePublicStore();
 const managerStore = useManagerStore();
@@ -22,19 +23,17 @@ onMounted(async () => {
 });
 // 修改文件路径格式
 const fixContent = async () => {
-  if (avatarUrl.valuel !== "") {
-    const fileUrl = new FormData();
+  if (avatarUrl.value != "") {
     let fileInput = document.getElementById("myFile");
     fileUrl.append("file", fileInput.files[0], avatarUrl.value);
     var pathSegments = await publicStore.fileMethods(fileUrl);
-    form.value.avatarUrl =
-      "http://8.137.11.172/forest/" + pathSegments.substring(22);
     avatarUrl.value = "";
-  }
+    return "http://8.137.11.172/forest/" + pathSegments.substring(22);
+  } else return form.value.avatarUrl;
 };
 // 更新教师信息
 const updateTeacherInfo = async () => {
-  await fixContent();
+  form.value.avatarUrl = await fixContent();
   await teacherStore.updateTeacherInfo(form.value);
   form.value = await teacherStore.getTeacherInfo();
   update.value = true;
@@ -51,7 +50,7 @@ const updateTeacherInfo = async () => {
       style="
         width: 480px;
         margin: 0 auto;
-        margin-top: 20vh;
+        margin-top: 10vh;
         border-radius: 15px;
       "
       shadow="always"

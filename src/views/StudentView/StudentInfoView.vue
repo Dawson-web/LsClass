@@ -11,6 +11,7 @@ const classList = ref([]);
 const birth = ref("");
 const avatarUrl = ref("");
 const update = ref(true);
+const fileUrl = new FormData();
 
 const publicStore = usePublicStore();
 const managerStore = useManagerStore();
@@ -25,19 +26,17 @@ onMounted(async () => {
 });
 // 格式化文件路径
 const fixContent = async () => {
-  if (avatarUrl.valuel !== "") {
-    const fileUrl = new FormData();
+  if (avatarUrl.value != "") {
     let fileInput = document.getElementById("myFile");
     fileUrl.append("file", fileInput.files[0], avatarUrl.value);
     var pathSegments = await publicStore.fileMethods(fileUrl);
-    form.value.avatarUrl =
-      "http://8.137.11.172/forest/" + pathSegments.substring(22);
     avatarUrl.value = "";
-  }
+    return "http://8.137.11.172/forest/" + pathSegments.substring(22);
+  } else return form.value.avatarUrl;
 };
 // 更新学生信息
 const updateStudentInfo = async () => {
-  await fixContent();
+  form.value.avatarUrl = await fixContent();
   form.value.birth = new Date(Date.parse(birth.value)).getTime();
   await studentStore.updateStudentInfo(form.value);
   form.value = await studentStore.getStudentInfo();
@@ -52,7 +51,7 @@ const updateStudentInfo = async () => {
 </script>
 <template>
   <el-card
-    style="width: 480px; margin: 0 auto; margin-top: 20vh; border-radius: 20px"
+    style="width: 480px; margin: 0 auto; margin-top: 10vh; border-radius: 15px"
     shadow="always"
   >
     <el-form :model="form" label-width="auto" style="max-width: 600px">

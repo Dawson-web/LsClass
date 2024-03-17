@@ -373,7 +373,7 @@ export const getHomeworkRankAPI = (homeworkId: string) => {
     },
   });
 };
-export const getHomeworkScoreDistributionAPI = (homeworkId: string) => {
+export const getHomeworkScoreDistributionAPI = (homeworkId: number) => {
   return DoRequest({
     url: `/homework/getScoreDistribution`,
     method: "POST",
