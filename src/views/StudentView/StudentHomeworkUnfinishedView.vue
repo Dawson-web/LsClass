@@ -32,8 +32,8 @@ const doCommitHomework = async () => {
 </script>
 
 <template>
-  <div>
-    <h1>未完成作业：</h1>
+  <div style="background-color: #eee; padding: 30px; border-radius: 15px">
+    <h1>未提交作业：</h1>
     <el-row :gutter="12">
       <el-col :span="8" :key="item.id" v-for="item in homeworkUnFinishList">
         <el-card shadow="hover" class="homework-card"
@@ -48,7 +48,9 @@ const doCommitHomework = async () => {
               <span class="type">作业分数：{{ item.score }}</span>
             </div>
           </div>
-          <el-button text @click="commitHomework(item.id)">提交作业</el-button>
+          <el-button text type="primary" @click="commitHomework(item.id)"
+            >提交作业</el-button
+          >
         </el-card>
       </el-col>
     </el-row>
@@ -95,15 +97,23 @@ const doCommitHomework = async () => {
 
 <style lang="scss" scoped>
 .homework-card {
+  margin-top: 10px;
+  border-radius: 15px;
+  &:hover {
+    transform: scale(1.02);
+  }
   .type {
+    align-self: flex-start;
     font-size: 12px;
     color: #999;
   }
 
   .bottom {
+    height: 70px;
     margin-top: 13px;
     line-height: 12px;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 10px;

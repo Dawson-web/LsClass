@@ -53,7 +53,8 @@ const cancleCreateCourse = () => {
   newCourseInfo.value = {};
 };
 const doCreateCourse = async () => {
-  (newCourseInfo.value.endDate = 1677753600000),
+  (newCourseInfo.value.endDate =
+    newCourseInfo.value.endDate * 7 * 24 * 60 * 60 * 1000 + Date.now()),
     await managerStore.createCourse(newCourseInfo.value);
   editVisible.value = false;
   getCourseList();
@@ -84,56 +85,59 @@ const doCreateCourse = async () => {
       </el-col>
     </el-row>
     <el-dialog v-model="updateVisible" title="修改课程" width="600">
-      <label for="">新院系名：</label>
-      <el-input
-        v-model="courseInfo.courseName"
-        style="width: 240px"
-        placeholder="Please input"
-      />
-      <el-input
-        v-model="courseInfo.description"
-        style="width: 240px"
-        placeholder="Please input"
-      />
-      <el-select
-        v-model="courseInfo.departmentName"
-        placeholder="Select"
-        size="large"
-        style="width: 240px"
-      >
-        <el-option
-          v-for="item in departmentList"
-          :key="item.id"
-          :label="item.department"
-          :value="item.id"
-        />
-      </el-select>
-      <el-select
-        v-model="courseInfo.className"
-        placeholder="Select"
-        size="large"
-        style="width: 240px"
-      >
-        <el-option
-          v-for="item in classList"
-          :key="item.id"
-          :label="item.className"
-          :value="item.id"
-        />
-      </el-select>
-      <el-select
-        v-model="courseInfo.teacherName"
-        placeholder="Select"
-        size="large"
-        style="width: 240px"
-      >
-        <el-option
-          v-for="item in TeacherList"
-          :key="item.id"
-          :label="item.nickname"
-          :value="item.id"
-        />
-      </el-select>
+      <el-form label-width="auto">
+        <el-form-item label="课程名">
+          <el-input
+            v-model="courseInfo.courseName"
+            style="width: 240px"
+            placeholder="Please input"
+        /></el-form-item>
+        <el-form-item label="介绍">
+          <el-input
+            v-model="courseInfo.description"
+            style="width: 240px"
+            placeholder="Please input" /></el-form-item
+        ><el-form-item label="学院">
+          <el-select
+            v-model="courseInfo.departmentId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in departmentList"
+              :key="item.id"
+              :label="item.department"
+              :value="item.id"
+            /> </el-select></el-form-item
+        ><el-form-item label="班级">
+          <el-select
+            v-model="courseInfo.classId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in classList"
+              :key="item.id"
+              :label="item.className"
+              :value="item.id"
+            /> </el-select></el-form-item
+        ><el-form-item label="老师">
+          <el-select
+            v-model="courseInfo.teacherId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in TeacherList"
+              :key="item.id"
+              :label="item.nickname"
+              :value="item.id"
+            /> </el-select
+        ></el-form-item>
+      </el-form>
       <el-button @click="cancleUpdateCourse">取消</el-button>
       <el-button type="primary" @click="doUpdateCourse">确认</el-button>
     </el-dialog>
@@ -145,57 +149,75 @@ const doCreateCourse = async () => {
       circle
     />
 
-    <el-dialog v-model="editVisible" title="新增课程" width="600">
-      <label for="">院系名：</label>
-      <el-input
-        v-model="newCourseInfo.courseName"
-        style="width: 240px"
-        placeholder="Please input"
-      />
-      <el-input
-        v-model="newCourseInfo.description"
-        style="width: 240px"
-        placeholder="Please input"
-      />
-      <el-select
-        v-model="newCourseInfo.departmentId"
-        placeholder="Select"
-        size="large"
-        style="width: 240px"
-      >
-        <el-option
-          v-for="item in departmentList"
-          :key="item.id"
-          :label="item.department"
-          :value="item.id"
-        />
-      </el-select>
-      <el-select
-        v-model="newCourseInfo.classId"
-        placeholder="Select"
-        size="large"
-        style="width: 240px"
-      >
-        <el-option
-          v-for="item in classList"
-          :key="item.id"
-          :label="item.className"
-          :value="item.id"
-        />
-      </el-select>
-      <el-select
-        v-model="newCourseInfo.teacherId"
-        placeholder="Select"
-        size="large"
-        style="width: 240px"
-      >
-        <el-option
-          v-for="item in TeacherList"
-          :key="item.id"
-          :label="item.nickname"
-          :value="item.id"
-        />
-      </el-select>
+    <el-dialog v-model="editVisible" title="新增课程" width="400">
+      <el-form label-position="right">
+        <el-form-item label="课程名">
+          <el-input
+            v-model="newCourseInfo.courseName"
+            style="width: 240px"
+            placeholder="Please input"
+        /></el-form-item>
+        <el-form-item label="介绍">
+          <el-input
+            v-model="newCourseInfo.description"
+            style="width: 240px"
+            placeholder="Please input"
+          />
+        </el-form-item>
+        <el-form-item label="学院">
+          <el-select
+            v-model="newCourseInfo.departmentId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in departmentList"
+              :key="item.id"
+              :label="item.department"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="班级">
+          <el-select
+            v-model="newCourseInfo.classId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in classList"
+              :key="item.id"
+              :label="item.className"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="老师">
+          <el-select
+            v-model="newCourseInfo.teacherId"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in TeacherList"
+              :key="item.id"
+              :label="item.nickname"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任课周数">
+          <el-input-number
+            v-model="newCourseInfo.endDate"
+            :min="1"
+            :max="120"
+            class="custom-select"
+          />
+        </el-form-item>
+      </el-form>
       <el-button @click="cancleCreateCourse">取消</el-button>
       <el-button type="primary" @click="doCreateCourse">创建</el-button>
     </el-dialog>

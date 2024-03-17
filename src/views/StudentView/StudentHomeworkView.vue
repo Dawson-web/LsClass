@@ -65,9 +65,11 @@ const doCommitHomework = async () => {
               <el-text class="type">作业序列号：{{ item.id }}</el-text>
               <el-text class="type">课程名：{{ item.courseName }}</el-text>
               <el-text class="type">任课老师：{{ item.teacherName }}</el-text>
-              <el-text class="type">学生：{{ item.studentName }}</el-text>
               <el-text class="type">作业状态：{{ item.status }}</el-text>
               <el-text class="type">作业分数：{{ item.score }}</el-text>
+              <el-text class="type"
+                >答疑：{{ item.answering ? item.answering : "待答疑" }}</el-text
+              >
               <el-text class="type">
                 附件:
                 <el-link
