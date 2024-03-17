@@ -4,19 +4,12 @@ import router from "@/router";
 import { usePublicStore } from "@/stores/public";
 import { ref } from "vue";
 const registerForm = ref({});
-const genders = [
-  {
-    label: "男",
-    value: "男",
-  },
-  {
-    label: "女",
-    value: "女",
-  },
-];
 
 const userType = ref("student");
 const onSubmit = async () => {
+  registerForm.value.birth = new Date(
+    Date.parse(registerForm.value.birth)
+  ).getTime();
   localStorage.setItem("usertype", userType.value);
   const usePubllic = usePublicStore();
   await usePubllic.userRegister(registerForm.value);
@@ -56,7 +49,13 @@ const onSubmit = async () => {
             </el-radio-group>
           </el-form-item>
           <el-form-item label="生日:">
-            <el-input v-model="registerForm.birth" />
+            <div class="block">
+              <el-date-picker
+                v-model="registerForm.birth"
+                type="dates"
+                placeholder="Pick one or more dates"
+              />
+            </div>
           </el-form-item>
           <el-form-item label="电话:">
             <el-input v-model="registerForm.phoneNum" />

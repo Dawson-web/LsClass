@@ -11,20 +11,21 @@ const managerStore = useManagerStore();
 const courseList = ref([]);
 const homeworkList = ref([]);
 const fileUrl = new FormData();
+// 获取作业列表
 const getTeacherHomework = async () => {
   homeworkList.value = await teacherStore.getTeacherHomework();
 };
-
+// 挂载
 onMounted(async () => {
   getTeacherHomework();
   courseList.value = await managerStore.getCourse();
 });
-
+// 取消创建作业
 const cancleCreateHomework = async () => {
   editVisible.value = false;
   homeWorkForm.value = {};
 };
-
+// 格式化url
 const fixContent = async () => {
   let fileInput = document.getElementById("myFile");
   fileUrl.append("file", fileInput.files[0], homeWorkForm.value.fileUrl);
@@ -35,10 +36,11 @@ const fixContent = async () => {
     "http://8.137.11.172/forest/" + pathSegments.substring(22);
   console.log(homeWorkForm.value.fileUrl);
 };
-
+// 创建作业
 const doCreateHomework = async () => {
   await fixContent();
-  homeWorkForm.value.dueDate = 1720496952373;
+  homeWorkForm.value.dueDate =
+    homeWorkForm.value.dueDate * 60 * 60 * 1000 + Date.now();
   await teacherStore.createHomework(homeWorkForm.value);
   editVisible.value = false;
   getTeacherHomework();
@@ -76,10 +78,10 @@ const timeConvert = (time: number) => {
             <el-text class="type">作业序列号：{{ item.homeworkId }}</el-text>
             <el-text class="type">作业描述：{{ item.description }}</el-text>
             <el-text class="type"
-              >发布时间：{{ timeConvert(item.dueDate) }}</el-text
+              >截止时间：{{ timeConvert(item.dueDate) }}</el-text
             >
             <el-text class="type"
-              >截止时间：{{ timeConvert(item.assignmentDate) }}</el-text
+              >发布时间：{{ timeConvert(item.assignmentDate) }}</el-text
             >
             <el-link
               type="primary"
@@ -127,7 +129,12 @@ const timeConvert = (time: number) => {
           />
         </el-form-item>
         <el-form-item label="作业描述">
-          <el-input v-model="homeWorkForm.description" class="input-field" />
+          <el-input
+            v-model="homeWorkForm.description"
+            type="textarea"
+            class="input-field"
+            style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="附件">
           <el-input

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useManagerStore } from "@/stores/manager";
+import { usePublicStore } from "@/stores/public";
 import { useStudentStore } from "@/stores/student";
 import { ElMessage } from "element-plus";
 import { onMounted, ref } from "vue";
@@ -7,25 +8,46 @@ import { onMounted, ref } from "vue";
 const form = ref({});
 const departmentList = ref([]);
 const classList = ref([]);
+const birth = ref("");
+const avatarUrl = ref("");
 
+const publicStore = usePublicStore();
 const managerStore = useManagerStore();
 const studentStore = useStudentStore();
 
 onMounted(async () => {
   form.value = await studentStore.getStudentInfo();
+  form.value.birth = new Date(form.value.birth);
   classList.value = await managerStore.getClass();
   departmentList.value = await managerStore.getDepartment();
 });
 
 const update = ref(true);
+
+const fixContent = async () => {
+  if (avatarUrl.valuel !== "") {
+    const fileUrl = new FormData();
+    let fileInput = document.getElementById("myFile");
+    fileUrl.append("file", fileInput.files[0], avatarUrl.value);
+    var pathSegments = await publicStore.fileMethods(fileUrl);
+    form.value.avatarUrl =
+      "http://8.137.11.172/forest/" + pathSegments.substring(22);
+    avatarUrl.value = "";
+  }
+};
+
 const updateStudentInfo = async () => {
+  await fixContent();
+  form.value.birth = new Date(Date.parse(birth.value)).getTime();
   await studentStore.updateStudentInfo(form.value);
   form.value = await studentStore.getStudentInfo();
+  form.value.birth = new Date(form.value.birth);
   update.value = true;
   ElMessage({
     message: "个人信息更新成功",
     type: "success",
   });
+  location.reload();
 };
 </script>
 <template>
@@ -34,11 +56,32 @@ const updateStudentInfo = async () => {
     shadow="always"
   >
     <el-form :model="form" label-width="auto" style="max-width: 600px">
+      <el-form-item label="头像">
+        <el-avatar shape="square" :src="form.avatarUrl" />
+        <el-input
+          style="width: 300px; margin-left: 20px"
+          placeholder="请选择头像文件"
+          v-model="avatarUrl"
+          :disabled="update"
+          type="file"
+          id="myFile"
+        />
+      </el-form-item>
       <el-form-item label="姓名：">
         <el-input v-model="form.name" :disabled="update" />
       </el-form-item>
       <el-form-item label="性别：">
         <el-input v-model="form.gender" :disabled="update" />
+      </el-form-item>
+      <el-form-item label="生日:">
+        <el-input v-if="update" v-model="form.birth" :disabled="update" />
+        <div class="block" v-if="!update">
+          <el-date-picker
+            v-model="birth"
+            type="dates"
+            placeholder="Pick one or more dates"
+          />
+        </div>
       </el-form-item>
       <el-form-item label="邮箱：">
         <el-input v-model="form.email" :disabled="update" />

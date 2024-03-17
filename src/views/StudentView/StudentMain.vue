@@ -1,5 +1,5 @@
 <template>
-  <NavMenu>
+  <NavMenu :avatar="avatar">
     <template #Menu>
       <el-sub-menu index="2">
         <template #title>作业</template>
@@ -15,6 +15,15 @@
 </template>
 <script lang="ts" setup>
 import NavMenu from "@/components/NavMenu.vue";
+// import { useStudentStore } from "@/stores/student";
+// import { onMounted, ref } from "vue";
+// const info = ref({});
+// const avatar = ref("");
+// onMounted(async () => {
+//   info.value = await useStudentStore().getStudentInfo;
+//   avatar.value = info.avatarUrl;
+//   console.log(1111);
+// });
 </script>
 
 <style lang="scss" scoped></style>

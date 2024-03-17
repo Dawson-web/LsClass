@@ -10,15 +10,18 @@ const homeworkList = ref([]);
 const homeworkInfo = ref({});
 const fileUrl = new FormData();
 const commitVisible = ref(false);
+const topic = ref("");
 
 onMounted(async () => {
   homeworkList.value = await studentStore.getStudentHomework();
   console.log(homeworkList.value);
 });
 
-const commitHomework = (id: number) => {
+const commitHomework = (id: number, _description: string) => {
   commitVisible.value = true;
   homeworkInfo.value.homeworkId = id;
+  topic.value = _description;
+  console.log(topic.value);
 };
 
 const cancleCommitHomework = () => {
@@ -77,7 +80,10 @@ const doCommitHomework = async () => {
               >
             </div>
           </div>
-          <el-button text type="primary" @click="commitHomework(item.id)"
+          <el-button
+            text
+            type="primary"
+            @click="commitHomework(item.id, item.homeWorkInfo.description)"
             >提交作业</el-button
           >
         </el-card>
@@ -95,6 +101,15 @@ const doCommitHomework = async () => {
         :model="homeworkInfo"
         style="max-width: 600px"
       >
+        <el-form-item label="题目">
+          <el-input
+            style="width: 500px"
+            v-model="topic"
+            :rows="2"
+            type="textarea"
+            disabled
+          />
+        </el-form-item>
         <el-form-item label="文本答案">
           <el-input
             style="width: 500px"

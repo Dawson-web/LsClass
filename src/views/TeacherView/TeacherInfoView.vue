@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useManagerStore } from "@/stores/manager";
+import { usePublicStore } from "@/stores/public";
 import { useTeacherStore } from "@/stores/teacher";
 import { ElMessage } from "element-plus";
 import { onMounted, ref } from "vue";
@@ -7,7 +8,10 @@ import { onMounted, ref } from "vue";
 const form = ref({});
 const departmentList = ref([]);
 const courseList = ref([]);
+const avatarUrl = ref("");
+const update = ref(true);
 
+const publicStore = usePublicStore();
 const managerStore = useManagerStore();
 const teacherStore = useTeacherStore();
 
@@ -17,8 +21,19 @@ onMounted(async () => {
   departmentList.value = await managerStore.getDepartment();
 });
 
-const update = ref(true);
+const fixContent = async () => {
+  if (avatarUrl.valuel !== "") {
+    const fileUrl = new FormData();
+    let fileInput = document.getElementById("myFile");
+    fileUrl.append("file", fileInput.files[0], avatarUrl.value);
+    var pathSegments = await publicStore.fileMethods(fileUrl);
+    form.value.avatarUrl =
+      "http://8.137.11.172/forest/" + pathSegments.substring(22);
+    avatarUrl.value = "";
+  }
+};
 const updateTeacherInfo = async () => {
+  await fixContent();
   await teacherStore.updateTeacherInfo(form.value);
   form.value = await teacherStore.getTeacherInfo();
   update.value = true;
@@ -26,6 +41,7 @@ const updateTeacherInfo = async () => {
     message: "个人信息更新成功",
     type: "success",
   });
+  location.reload();
 };
 </script>
 <template>
@@ -39,6 +55,17 @@ const updateTeacherInfo = async () => {
       "
       shadow="always"
       ><el-form :model="form" label-width="auto">
+        <el-form-item label="头像">
+          <el-avatar shape="square" :src="form.avatarUrl" />
+          <el-input
+            style="width: 300px; margin-left: 20px"
+            placeholder="请选择头像文件"
+            v-model="avatarUrl"
+            :disabled="update"
+            type="file"
+            id="myFile"
+          />
+        </el-form-item>
         <el-form-item label="名称">
           <el-input v-model="form.nickname" :disabled="update" />
         </el-form-item>
